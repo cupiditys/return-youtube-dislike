@@ -125,7 +125,7 @@ function RYD() {
     setDislikes(formattedDislike);
     storedData.dislikes = parseInt(response.dislikes);
     storedData.likes = getLikeCountFromButton() || parseInt(response.likes);
-    createRateBar(storedData.likes, storedData.dislikes);
+    createRateBar(response.likes, response.dislikes);
   }
 
   function setState() {
@@ -309,7 +309,23 @@ function RYD() {
   }
 
   function createRateBar(likes, dislikes) {
-    let rateBar = document.getElementById("ryd-bar-container");
+    var rateBar = document.getElementById(
+      "return-youtube-dislike-bar-container"
+    );
+
+    const widthPx =
+      getButtons().children[0].clientWidth +
+      getButtons().children[1].clientWidth +
+      8;
+
+    const widthPercent =
+      likes + dislikes > 0 ? (likes / (likes + dislikes)) * 100 : 50;
+
+    if (!rateBar) {
+        function createRateBar(likes, dislikes) {
+    var rateBar = document.getElementById(
+      "return-youtube-dislike-bar-container"
+    );
 
     const widthPx =
       getButtons().children[0].clientWidth +
@@ -329,11 +345,11 @@ function RYD() {
           <div class="ryd-tooltip" style="width: ${widthPx}px">
           <div class="ryd-tooltip-bar-container">
              <div
-                id="ryd-bar-container"
+                id="return-youtube-dislike-bar-container"
                 style="width: 100%; height: 2px;"
                 >
                 <div
-                   id="ryd-bar"
+                   id="return-youtube-dislike-bar"
                    style="width: ${widthPercent}%; height: 100%"
                    ></div>
              </div>
@@ -345,8 +361,43 @@ function RYD() {
   `
       );
     } else {
-      document.getElementById("ryd-bar-container").style.width = widthPx + "px";
-      document.getElementById("ryd-bar").style.width = widthPercent + "%";
+      document.getElementById(
+        "return-youtube-dislike-bar-container"
+      ).style.width = widthPx + "px";
+      document.getElementById("return-youtube-dislike-bar").style.width =
+        widthPercent + "%";
+
+      document.querySelector(
+        "#ryd-dislike-tooltip > #tooltip"
+      ).innerHTML = `${likes.toLocaleString()}&nbsp;/&nbsp;${dislikes.toLocaleString()}`;
+    }
+  }(
+        "beforeend",
+        `
+          <div class="ryd-tooltip" style="width: ${widthPx}px">
+          <div class="ryd-tooltip-bar-container">
+             <div
+                id="return-youtube-dislike-bar-container"
+                style="width: 100%; height: 2px;"
+                >
+                <div
+                   id="return-youtube-dislike-bar"
+                   style="width: ${widthPercent}%; height: 100%"
+                   ></div>
+             </div>
+          </div>
+          <tp-yt-paper-tooltip position="top" id="ryd-dislike-tooltip" class="style-scope ytd-sentiment-bar-renderer" role="tooltip" tabindex="-1">
+             <!--css-build:shady-->${likes.toLocaleString()}&nbsp;/&nbsp;${dislikes.toLocaleString()}
+          </tp-yt-paper-tooltip>
+          </div>
+  `
+      );
+    } else {
+      document.getElementById(
+        "return-youtube-dislike-bar-container"
+      ).style.width = widthPx + "px";
+      document.getElementById("return-youtube-dislike-bar").style.width =
+        widthPercent + "%";
 
       document.querySelector(
         "#ryd-dislike-tooltip > #tooltip"
