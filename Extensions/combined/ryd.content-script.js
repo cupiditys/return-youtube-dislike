@@ -125,7 +125,7 @@ function RYD() {
     setDislikes(formattedDislike);
     storedData.dislikes = parseInt(response.dislikes);
     storedData.likes = getLikeCountFromButton() || parseInt(response.likes);
-    createRateBar(response.likes, response.dislikes);
+    createRateBar(storedData.likes, storedData.dislikes);
   }
 
   function setState() {
@@ -309,7 +309,7 @@ function RYD() {
   }
 
   function createRateBar(likes, dislikes) {
-    var rateBar = document.getElementById(
+    let rateBar = document.getElementById(
       "return-youtube-dislike-bar-container"
     );
 
@@ -322,56 +322,7 @@ function RYD() {
       likes + dislikes > 0 ? (likes / (likes + dislikes)) * 100 : 50;
 
     if (!rateBar) {
-        function createRateBar(likes, dislikes) {
-    var rateBar = document.getElementById(
-      "return-youtube-dislike-bar-container"
-    );
-
-    const widthPx =
-      getButtons().children[0].clientWidth +
-      getButtons().children[1].clientWidth +
-      8;
-
-    const widthPercent =
-      likes + dislikes > 0 ? (likes / (likes + dislikes)) * 100 : 50;
-
-    if (!rateBar) {
-      (
-        document.getElementById("menu-container") ||
-        document.querySelector("ytm-slim-video-action-bar-renderer")
-      ).insertAdjacentHTML(
-        "beforeend",
-        `
-          <div class="ryd-tooltip" style="width: ${widthPx}px">
-          <div class="ryd-tooltip-bar-container">
-             <div
-                id="return-youtube-dislike-bar-container"
-                style="width: 100%; height: 2px;"
-                >
-                <div
-                   id="return-youtube-dislike-bar"
-                   style="width: ${widthPercent}%; height: 100%"
-                   ></div>
-             </div>
-          </div>
-          <tp-yt-paper-tooltip position="top" id="ryd-dislike-tooltip" class="style-scope ytd-sentiment-bar-renderer" role="tooltip" tabindex="-1">
-             <!--css-build:shady-->${likes.toLocaleString()}&nbsp;/&nbsp;${dislikes.toLocaleString()}
-          </tp-yt-paper-tooltip>
-          </div>
-  `
-      );
-    } else {
-      document.getElementById(
-        "return-youtube-dislike-bar-container"
-      ).style.width = widthPx + "px";
-      document.getElementById("return-youtube-dislike-bar").style.width =
-        widthPercent + "%";
-
-      document.querySelector(
-        "#ryd-dislike-tooltip > #tooltip"
-      ).innerHTML = `${likes.toLocaleString()}&nbsp;/&nbsp;${dislikes.toLocaleString()}`;
-    }
-  }(
+      document.getElementById("menu-container").insertAdjacentHTML(
         "beforeend",
         `
           <div class="ryd-tooltip" style="width: ${widthPx}px">
